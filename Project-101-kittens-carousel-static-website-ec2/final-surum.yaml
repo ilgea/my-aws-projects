@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: 
+  Sample template to provision an EC2 Instance with public IP. Create a Security Group and associate with this EC2.
+  You will be billed for the AWS resources used if you create a stack from this template.
+  After deleting stack, remember to delete the associated S3 bucket.
+
+# get the name of the base stack which is created first and has VPC details
+Parameters:
+  InstanceType:
+    Description: EC2 instance type
+    Type: String
+    Default: t2.micro
+
+  InstanceImageId:
+    Description: EC2 Image Id from this region
+    Type: AWS::EC2::Image::Id
+    Default: ami-05fa00d4c63e32376  
+
+Resources:
+  EC2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      InstanceType: t2.micro             
+      SecurityGroupIds:
+        - http-ssh-sec-grp
+      KeyName: firstkey # !Ref KeyPairName
+      ImageId: ami-05fa00d4c63e32376
+      UserData: 
+        Fn::Base64: |
+          #!/bin/bash
+          yum update -y
+          yum install git -y
+          yum install httpd -y
+          systemctl start httpd
+          systemctl enable httpd
+          chmod -R 777 /var/www/html
+          cd /home/ec2-user
+          git clone https://github.com/ilgea/my-projects.git
+          cp my-projects/Project-101-kittens-carousel-static-website-ec2/static-web/* ../../var/www/html/
+          systemctl restart httpd
