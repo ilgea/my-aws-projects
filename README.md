@@ -1,1 +1,1 @@
-# my-projects
+# my-aws-projects
