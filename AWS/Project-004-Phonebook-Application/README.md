@@ -126,6 +126,8 @@ thousand                         Warning -> 'Invalid input: Phone number should 
 
 ![Phonebook App Search Page](./search-snapshot.png)
 
+![cozum-asamalari](./cozum-asamalari.png)
+
 ### At the end of the project, following topics are to be covered;
 
 - Programming with Python
